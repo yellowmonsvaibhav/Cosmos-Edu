@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Master new skills in programming, design, and data science. Join thousands of learners building the future today with Cosmos.">
+    <meta name="keywords" content="online courses, programming, design, data science, learning platform, education">
+    <meta name="author" content="Cosmos">
+    <meta property="og:title" content="Cosmos - Master the Future">
+    <meta property="og:description"
+        content="Master new skills in programming, design, and data science. Join thousands of learners building the future today.">
+    <meta property="og:type" content="website">
+    <title>Cosmos - Master the Future</title>
+    <!-- Links to CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Cosmos</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link active">Home</a></li>
+                    <li><a href="#courses" class="nav-link">Courses</a></li>
+                    <li><a href="subscription.html" class="nav-link">Subscription</a></li>
+                    <li><a href="instructor-signup.html" class="nav-link">Become an Instructor</a></li>
+                    <li><a href="login.html" class="nav-link nav-auth-login">Log In</a></li>
+                    <li><a href="signup.html" class="btn btn-primary nav-auth-signup" style="padding: 8px 20px; font-size: 0.9rem;">Sign Up</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-shine"></div>
+            <div class="hero-container">
+                <h1 class="hero-title">
+                    <span class="hero-line">Unlock Your Potential with</span>
+                    <span class="hero-line hero-highlight">World-Class Learning</span>
+                </h1>
+                <p class="hero-subtitle">Master new skills in programming, design, and data science. Join thousands of learners building the future today.</p>
+                <div class="input-group hero-search">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search for anything...">
+                </div>
+                <div class="hero-ctas">
+                    <a href="#courses" class="btn btn-primary hero-cta-primary">Explore Courses</a>
+                    <a href="signup.html" class="btn btn-outline hero-cta-secondary">Sign Up Free</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Strip -->
+        <section class="landing-stats">
+            <div class="landing-stats-inner">
+                <div class="stat-item">
+                    <span class="stat-value" data-count="100">100K+</span>
+                    <span class="stat-label">Students</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">500+</span>
+                    <span class="stat-label">Courses</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">4.8</span>
+                    <span class="stat-label">Avg Rating</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">50+</span>
+                    <span class="stat-label">Instructors</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="landing-features">
+            <h2 class="landing-features-title">Why learn with Cosmos?</h2>
+            <div class="landing-features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">📚</div>
+                    <h3>Expert-Led Courses</h3>
+                    <p>Learn from industry professionals with real-world experience.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Hands-On Projects</h3>
+                    <p>Build portfolios with projects you can show employers.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Learn at Your Pace</h3>
+                    <p>Lifetime access — study when and where you want.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Certificates</h3>
+                    <p>Earn certificates to showcase your new skills.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Sections by Category -->
+        <section id="courses" class="courses-section animate-on-scroll">
+            <!-- Search & Filters -->
+            <div class="course-filters">
+                <input type="text" id="filterSearch" class="search-input" placeholder="Search courses...">
+                <select id="filterCategory">
+                    <option value="all">All categories</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Design">Design</option>
+                </select>
+                <select id="filterPrice">
+                    <option value="">Price</option>
+                    <option value="free">Free</option>
+                    <option value="paid">Paid</option>
+                    <option value="under50">Under $50</option>
+                    <option value="50-100">$50–100</option>
+                    <option value="over100">Over $100</option>
+                </select>
+                <select id="filterRating">
+                    <option value="">Rating</option>
+                    <option value="4.5">4.5+ stars</option>
+                    <option value="4">4+ stars</option>
+                    <option value="3.5">3.5+ stars</option>
+                </select>
+                <select id="filterLevel">
+                    <option value="all">Level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+                <select id="filterSort">
+                    <option value="">Sort by</option>
+                    <option value="rating">Highest rated</option>
+                    <option value="students">Most popular</option>
+                    <option value="price-low">Price: low to high</option>
+                    <option value="price-high">Price: high to low</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </div>
+            <!-- Programming Courses Section -->
+            <div class="course-section">
+                <div class="course-section-header">
+                    <h2>💻 Programming Courses</h2>
+                    <span class="chip chip-featured">Featured</span>
+                </div>
+                <div class="course-grid" id="programmingGrid">
+                    <!-- Programming courses will be injected here -->
+                </div>
+            </div>
+
+            <!-- Data Science Courses Section -->
+            <div class="course-section">
+                <div class="course-section-header">
+                    <h2>📊 Data Science Courses</h2>
+                    <span class="chip chip-trending">Trending</span>
+                </div>
+                <div class="course-grid" id="dataScienceGrid">
+                    <!-- Data Science courses will be injected here -->
+                </div>
+            </div>
+
+            <!-- Design Courses Section -->
+            <div class="course-section">
+                <div class="course-section-header">
+                    <h2>🎨 Design Courses</h2>
+                    <span class="chip chip-popular">Popular</span>
+                </div>
+                <div class="course-grid" id="designGrid">
+                    <!-- Design courses will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="landing-cta">
+            <div class="landing-cta-inner">
+                <h2 class="landing-cta-title">Ready to start learning?</h2>
+                <p class="landing-cta-text">Join Cosmos today and get access to hundreds of courses. No credit card required.</p>
+                <div class="landing-cta-buttons">
+                    <a href="signup.html" class="btn btn-primary cta-btn-primary">Create Free Account</a>
+                    <a href="#courses" class="btn btn-outline cta-btn-secondary">Browse Courses</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Cosmos. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="#courses">Courses</a>
+                <a href="instructor-signup.html">Become an Instructor</a>
+                <a href="login.html">Login</a>
+                <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script -->
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="course-utils.js"></script>
+    <script src="script.js"></script>
+    <script src="animations.js"></script>
+</body>
+
+</html>

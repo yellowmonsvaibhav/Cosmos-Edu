@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Watch and learn from your course content.">
+    <title>Course Player - Cosmos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="player.css">
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+</head>
+
+<body>
+
+    <!-- Simple Header for Player -->
+    <header class="player-header">
+        <div class="header-left">
+            <a href="index.html" class="back-home">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+            </a>
+            <div class="course-mini-info">
+                <h1 id="headerTitle">Loading Course...</h1>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <a href="index.html#courses" style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Browse Courses</a>
+            <a href="profile.html" style="color: var(--text-secondary); font-size: 0.9rem; text-decoration: none;">Profile</a>
+        </div>
+    </header>
+
+    <main class="player-container">
+        <!-- Main Content (Video) -->
+        <div class="video-section">
+            <div class="video-player-wrapper">
+                <!-- Placeholder for Video -->
+                <div class="video-placeholder" id="videoContainer">
+                    <div class="play-button">▶</div>
+                    <p>Click to Start Lesson</p>
+                </div>
+            </div>
+
+            <div class="course-meta">
+                <div class="tabs">
+                    <button class="tab active" data-tab="overview">Overview</button>
+                    <button class="tab" data-tab="qa">Q&A</button>
+                    <button class="tab" data-tab="resources">Resources</button>
+                    <button class="tab" data-tab="notes">Notes</button>
+                    <button class="tab" data-tab="announcements">Announcements</button>
+                </div>
+
+                <div class="tab-content" id="overview">
+                    <h2 class="section-title">About this course</h2>
+                    <p id="courseDescription" class="course-description">
+                        Loading description...
+                    </p>
+
+                    <div class="instructor-box">
+                        <h3>Instructor</h3>
+                        <div class="instructor-profile">
+                            <div class="avatar">T</div>
+                            <div>
+                                <h4 id="instructorName">Teacher Name</h4>
+                                <span class="badge">Instructor</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="qa" style="display: none;">
+                    <h2 class="section-title">Questions & Answers</h2>
+                    <p class="course-description">Have questions? Ask the instructor or browse existing Q&A.</p>
+                    <div id="qaAskForm" style="margin-top: 20px; margin-bottom: 24px;"></div>
+                    <div id="qaList" style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                        <p style="color: var(--text-secondary);">Loading...</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="resources" style="display: none;">
+                    <h2 class="section-title">Course Resources</h2>
+                    <p class="course-description">Download PDFs and files for this course.</p>
+                    <div id="resourcesList" style="margin-top: 20px;"></div>
+                </div>
+
+                <div class="tab-content" id="notes" style="display: none;">
+                    <h2 class="section-title">Your Notes</h2>
+                    <p class="course-description">Take notes while watching the course.</p>
+                    <textarea placeholder="Start taking notes..." style="width: 100%; min-height: 200px; padding: 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white; font-family: inherit; margin-top: 20px;"></textarea>
+                </div>
+
+                <div class="tab-content" id="announcements" style="display: none;">
+                    <h2 class="section-title">Announcements</h2>
+                    <p class="course-description">Important updates from the instructor.</p>
+                    <div style="padding: 20px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-top: 20px;">
+                        <p style="color: var(--text-secondary);">No announcements at this time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar (Curriculum & Offers) -->
+        <aside class="player-sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <h3>Course Content</h3>
+            </div>
+
+            <!-- Curriculum List -->
+            <div class="curriculum-list" id="curriculumList">
+                <!-- Javascript will populate this -->
+                <div class="section-item">
+                    <h4>Section 1: Introduction</h4>
+                    <ul class="lesson-list">
+                        <li class="lesson active">
+                            <span class="checkbox"></span>
+                            <span>1. Welcome to the course</span>
+                            <span class="time">2:30</span>
+                        </li>
+                        <li class="lesson">
+                            <span class="checkbox"></span>
+                            <span>2. Course Overview</span>
+                            <span class="time">5:15</span>
+                        </li>
+                        <li class="lesson">
+                            <span class="checkbox"></span>
+                            <span>3. Tools Setup</span>
+                            <span class="time">4:45</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="section-item">
+                    <h4>Section 2: Getting Started</h4>
+                    <ul class="lesson-list">
+                        <li class="lesson">
+                            <span class="checkbox"></span>
+                            <span>4. First Concept</span>
+                            <span class="time">12:30</span>
+                        </li>
+                        <li class="lesson">
+                            <span class="checkbox"></span>
+                            <span>5. Practical Exercise</span>
+                            <span class="time">8:20</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- "Stripe" / Offer Box -->
+            <div class="offer-box">
+                <div class="offer-header">
+                    <h3>🎁 Special Offer</h3>
+                </div>
+                <div class="offer-content">
+                    <p>Upgrade to get the full certificate and source code!</p>
+                    <div class="offer-price">
+                        <span class="offer-curr">$14.99</span>
+                        <span class="offer-orig">$199</span>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%">Claim Offer</button>
+                    <p class="offer-time">Ends in 2 hours!</p>
+                </div>
+            </div>
+
+        </aside>
+    </main>
+
+    <script src="auth.js"></script>
+    <script src="course-utils.js"></script>
+    <script>
+        // Dynamic Course Player with Progress Tracking
+        let currentCourse = null;
+        let currentProgress = null;
+        let currentUserId = null;
+        let currentSectionIdx = 0;
+        let currentLessonIdx = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const courseId = parseInt(params.get('id'));
+
+            const courses = JSON.parse(localStorage.getItem('udemyCourses')) || [];
+            const course = courses.find(c => c.id === courseId);
+
+            if (course) {
+                currentCourse = course;
+                document.title = `${course.title} | Learning`;
+                document.getElementById('headerTitle').textContent = course.title;
+                document.getElementById('courseDescription').textContent = course.desc;
+                document.getElementById('instructorName').textContent = course.instructor;
+
+                const user = Auth.getCurrentUser();
+                currentUserId = user ? (user.id || user.email) : null;
+                const isEnrolled = user && user.enrolledCourses && user.enrolledCourses.includes(course.id);
+
+                if (isEnrolled && currentUserId) {
+                    currentProgress = CourseUtils.getProgress(currentUserId, courseId);
+                    if (currentProgress.lastLesson != null) {
+                        currentSectionIdx = currentProgress.lastLesson.sectionIndex;
+                        currentLessonIdx = currentProgress.lastLesson.lessonIndex;
+                    }
+                }
+
+                // Render Curriculum (with progress)
+                renderCurriculum(course.curriculum || [], isEnrolled && currentUserId);
+
+                // Update Offer Box
+                if (course.price === 0) {
+                    document.querySelector('.offer-box').innerHTML = `
+                        <div class="offer-content" style="text-align: center; padding: 20px;">
+                            <h3>Course Completed?</h3>
+                            <button class="btn btn-outline" style="width:100%">Get Certificate</button>
+                        </div>
+                    `;
+                } else if (!user) {
+                    document.querySelector('.offer-box').innerHTML = `
+                        <div class="offer-content" style="text-align: center; padding: 20px;">
+                            <h3>Get Full Access</h3>
+                            <div class="offer-price">
+                                <span class="offer-curr">$${course.price}</span>
+                                <span class="offer-orig">$${course.originalPrice}</span>
+                            </div>
+                            <a href="login.html" class="btn btn-primary" style="width: 100%; margin-top: 12px;">Sign In to Purchase</a>
+                        </div>
+                    `;
+                } else if (!isEnrolled) {
+                    document.querySelector('.offer-box').innerHTML = `
+                        <div class="offer-content" style="text-align: center; padding: 20px;">
+                            <h3>Get Full Access</h3>
+                            <div class="offer-price">
+                                <span class="offer-curr">$${course.price}</span>
+                                <span class="offer-orig">$${course.originalPrice}</span>
+                            </div>
+                            <a href="checkout.html?courseId=${course.id}" class="btn btn-primary" style="width: 100%; margin-top: 12px;">Purchase Course</a>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 12px;">Secure payment via Stripe</p>
+                        </div>
+                    `;
+                } else {
+                    const progressPercent = currentProgress ? currentProgress.progressPercent : 0;
+                    const completed = currentProgress && currentProgress.completed;
+                    document.querySelector('.offer-box').innerHTML = `
+                        <div class="offer-content" style="text-align: center; padding: 20px;">
+                            <h3 style="color: #10b981;">✓ Enrolled</h3>
+                            <p style="color: var(--text-secondary); margin-top: 8px;">You have full access to this course</p>
+                            <div style="margin-top: 16px; text-align: left;">
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom: 6px;">
+                                    <span>Your progress</span>
+                                    <span>${progressPercent}%</span>
+                                </div>
+                                <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                    <div style="height: 100%; width: ${progressPercent}%; background: #10b981; transition: width 0.3s;"></div>
+                                </div>
+                            </div>
+                            ${completed ? '<a href="profile.html#certificates" class="btn btn-outline" style="width:100%; margin-top: 12px;">View Certificate</a>' : ''}
+                        </div>
+                    `;
+                }
+
+                // Setup Tab Functionality
+                setupTabs();
+
+                // Q&A: render and form (enrolled users only)
+                if (typeof CourseUtils !== 'undefined' && isEnrolled && user) {
+                    renderQA(course.id, user);
+                } else {
+                    document.getElementById('qaAskForm').innerHTML = '';
+                    document.getElementById('qaList').innerHTML = '<p style="color: var(--text-secondary);">Enroll in this course to ask questions and see Q&A.</p>';
+                }
+
+                // Resources: build list from course.resources and curriculum lesson resources
+                renderResources(course);
+            } else {
+                document.body.innerHTML = '<h1 style="color:white; text-align:center; margin-top:50px;">Course Not Found</h1>';
+            }
+        });
+
+        function renderQA(courseId, user) {
+            const questions = CourseUtils.getQuestions(courseId);
+            const userId = user.id || user.email;
+            const isInstructor = user.role === 'teacher' && currentCourse && currentCourse.instructor === user.name;
+
+            document.getElementById('qaAskForm').innerHTML = `
+                <div style="margin-bottom: 16px;">
+                    <textarea id="qaQuestionInput" placeholder="Ask a question..." style="width: 100%; min-height: 80px; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: white; font-family: inherit; resize: vertical;"></textarea>
+                    <button type="button" class="btn btn-primary" style="margin-top: 8px;" onclick="submitQAQuestion()">Post Question</button>
+                </div>
+            `;
+
+            if (questions.length === 0) {
+                document.getElementById('qaList').innerHTML = '<p style="color: var(--text-secondary);">No questions yet. Be the first to ask!</p>';
+            } else {
+                document.getElementById('qaList').innerHTML = questions.map(q => {
+                    const answers = (q.answers || []).map(a => `
+                        <div style="margin-left: 24px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-top: 8px; border-left: 3px solid var(--primary-color);">
+                            <strong style="color: var(--text-primary);">${a.userName} ${a.isInstructor ? '(Instructor)' : ''}</strong>
+                            <p style="color: var(--text-secondary); margin-top: 6px; font-size: 0.95rem;">${a.answer}</p>
+                        </div>
+                    `).join('');
+                    return `
+                        <div style="padding: 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; margin-bottom: 16px;">
+                            <strong style="color: var(--text-primary);">${q.userName}</strong>
+                            <p style="color: var(--text-secondary); margin-top: 8px;">${q.question}</p>
+                            ${answers}
+                            ${isInstructor ? `
+                                <div style="margin-top: 12px;">
+                                    <input type="text" id="answer_${q.id}" placeholder="Reply as instructor..." style="width: 100%; padding: 8px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 6px; color: white; font-size: 0.9rem;">
+                                    <button type="button" class="btn btn-outline" style="margin-top: 8px; padding: 8px 16px;" onclick="submitQAAnswer(${q.id})">Reply</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function submitQAQuestion() {
+            const input = document.getElementById('qaQuestionInput');
+            if (!input || !input.value.trim() || !currentCourse || !currentUserId) return;
+            const user = Auth.getCurrentUser();
+            CourseUtils.addQuestion(currentCourse.id, currentUserId, user.name, input.value.trim());
+            input.value = '';
+            renderQA(currentCourse.id, user);
+        }
+
+        function submitQAAnswer(questionId) {
+            const input = document.getElementById('answer_' + questionId);
+            if (!input || !input.value.trim() || !currentCourse) return;
+            const user = Auth.getCurrentUser();
+            CourseUtils.addAnswer(questionId, user.id || user.email, user.name, input.value.trim(), user.role === 'teacher');
+            input.value = '';
+            renderQA(currentCourse.id, user);
+        }
+
+        function renderResources(course) {
+            const container = document.getElementById('resourcesList');
+            if (!container) return;
+            const resources = course.resources || [];
+            const fromLessons = (course.curriculum || []).reduce((acc, section) => {
+                (section.lessons || []).forEach(lesson => {
+                    if (lesson.resources && Array.isArray(lesson.resources)) {
+                        lesson.resources.forEach(r => acc.push({ ...r, section: section.title, lesson: lesson.title }));
+                    }
+                });
+                return acc;
+            }, []);
+            const all = [...resources, ...fromLessons];
+            if (all.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary);">No downloadable resources for this course yet.</p>';
+                return;
+            }
+            container.innerHTML = all.map((r, i) => `
+                <a href="${r.url || '#'}" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 8px; color: var(--text-primary); text-decoration: none;">
+                    <span style="font-size: 1.5rem;">📄</span>
+                    <div>
+                        <strong>${r.name || 'Resource ' + (i + 1)}</strong>
+                        ${r.section ? `<p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">${r.section} • ${r.lesson || ''}</p>` : ''}
+                    </div>
+                    <span style="margin-left: auto; color: var(--primary-color);">Download</span>
+                </a>
+            `).join('');
+        }
+
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTab = tab.dataset.tab;
+
+                    // Remove active from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Hide all tab contents
+                    tabContents.forEach(content => {
+                        content.style.display = 'none';
+                    });
+
+                    // Show selected tab content
+                    const targetContent = document.getElementById(targetTab);
+                    if (targetContent) {
+                        targetContent.style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        function renderCurriculum(curriculum, trackProgress) {
+            const container = document.getElementById('curriculumList');
+            container.innerHTML = '';
+
+            if (!curriculum || curriculum.length === 0) {
+                container.innerHTML = '<p style="padding:20px; color:var(--text-secondary);">No curriculum available yet.</p>';
+                return;
+            }
+
+            let firstLoaded = false;
+            curriculum.forEach((section, sectionIdx) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section-item';
+
+                const sectionTitle = document.createElement('h4');
+                sectionTitle.textContent = section.title;
+                sectionDiv.appendChild(sectionTitle);
+
+                const lessonList = document.createElement('ul');
+                lessonList.className = 'lesson-list';
+
+                (section.lessons || []).forEach((lesson, lessonIdx) => {
+                    const lessonKey = sectionIdx + '_' + lessonIdx;
+                    const isCompleted = trackProgress && currentProgress && currentProgress.completedLessons && currentProgress.completedLessons.includes(lessonKey);
+                    const hasLast = currentProgress && currentProgress.lastLesson != null;
+                    const isActive = (hasLast && currentProgress.lastLesson.sectionIndex === sectionIdx && currentProgress.lastLesson.lessonIndex === lessonIdx) || (!hasLast && sectionIdx === 0 && lessonIdx === 0);
+
+                    const lessonItem = document.createElement('li');
+                    lessonItem.className = 'lesson' + (isActive ? ' active' : '') + (isCompleted ? ' completed' : '');
+                    lessonItem.dataset.sectionIdx = sectionIdx;
+                    lessonItem.dataset.lessonIdx = lessonIdx;
+
+                    lessonItem.innerHTML = `
+                        <span class="checkbox">${isCompleted ? '✓' : ''}</span>
+                        <span>${lessonIdx + 1}. ${lesson.title}</span>
+                        <span class="time">${lesson.duration || '5:00'}</span>
+                    `;
+
+                    if (isActive && !firstLoaded) {
+                        firstLoaded = true;
+                        loadVideo(lesson.url, lesson.title);
+                    }
+
+                    lessonItem.addEventListener('click', () => {
+                        document.querySelectorAll('.lesson').forEach(l => l.classList.remove('active'));
+                        lessonItem.classList.add('active');
+
+                        loadVideo(lesson.url, lesson.title);
+
+                        if (trackProgress && currentUserId && currentCourse) {
+                            CourseUtils.updateLastLesson(currentUserId, currentCourse.id, sectionIdx, lessonIdx);
+                        }
+
+                        updateMarkCompleteButton(sectionIdx, lessonIdx);
+                    });
+
+                    lessonList.appendChild(lessonItem);
+                });
+
+                sectionDiv.appendChild(lessonList);
+                container.appendChild(sectionDiv);
+            });
+
+            updateMarkCompleteButton(currentSectionIdx, currentLessonIdx);
+        }
+
+        function updateMarkCompleteButton(sectionIdx, lessonIdx) {
+            currentSectionIdx = sectionIdx;
+            currentLessonIdx = lessonIdx;
+            let existing = document.getElementById('markCompleteBtnWrap');
+            if (existing) existing.remove();
+
+            if (!currentUserId || !currentCourse) return;
+
+            const lessonKey = sectionIdx + '_' + lessonIdx;
+            const isCompleted = currentProgress && currentProgress.completedLessons && currentProgress.completedLessons.includes(lessonKey);
+
+            const wrap = document.createElement('div');
+            wrap.id = 'markCompleteBtnWrap';
+            wrap.style.cssText = 'padding: 16px 24px; border-top: 1px solid var(--border-color);';
+            wrap.innerHTML = isCompleted
+                ? '<button type="button" class="btn btn-outline" style="width:100%;" disabled>✓ Completed</button>'
+                : '<button type="button" id="markCompleteBtn" class="btn btn-primary" style="width:100%;">Mark as complete</button>';
+            document.querySelector('.player-sidebar .sidebar-header')?.after(wrap);
+
+            if (!isCompleted) {
+                document.getElementById('markCompleteBtn').addEventListener('click', () => {
+                    CourseUtils.markLessonComplete(currentUserId, currentCourse.id, sectionIdx, lessonIdx);
+                    currentProgress = CourseUtils.getProgress(currentUserId, currentCourse.id);
+                    const lessonEl = document.querySelector('.lesson.active');
+                    if (lessonEl) {
+                        lessonEl.classList.add('completed');
+                        lessonEl.querySelector('.checkbox').textContent = '✓';
+                    }
+                    updateMarkCompleteButton(sectionIdx, lessonIdx);
+                });
+            }
+        }
+
+        function loadVideo(url, title) {
+            const videoContainer = document.getElementById('videoContainer');
+
+            if (!url) {
+                videoContainer.innerHTML = `
+                    <div class="play-button">▶</div>
+                    <p>No video URL provided</p>
+                `;
+                return;
+            }
+
+            // Support YouTube embeds
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                let videoId = '';
+                if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1].split('?')[0];
+                } else if (url.includes('youtube.com/watch')) {
+                    videoId = new URLSearchParams(new URL(url).search).get('v');
+                }
+
+                videoContainer.innerHTML = `
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/${videoId}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        style="border-radius: 0;">
+                    </iframe>
+                `;
+            } else {
+                // Direct video URL (mp4, etc)
+                videoContainer.innerHTML = `
+                    <video 
+                        width="100%" 
+                        height="100%" 
+                        controls 
+                        autoplay
+                        style="background: #000;">
+                        <source src="${url}" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                `;
+            }
+        }
+    </script>
+</body>
+
+</html>

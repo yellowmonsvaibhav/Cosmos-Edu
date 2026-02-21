@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Course details - Cosmos Learning Platform">
+    <title>Course - Cosmos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Cosmos</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html#courses" class="nav-link">Courses</a></li>
+                    <li><a href="subscription.html" class="nav-link">Subscription</a></li>
+                    <li><a href="instructor-signup.html" class="nav-link">Become an Instructor</a></li>
+                    <li><a href="login.html" class="nav-link">Log In</a></li>
+                    <li><a href="signup.html" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">Sign Up</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="course-landing">
+        <div id="courseContent">
+            <!-- Filled by JS -->
+        </div>
+    </main>
+
+    <footer style="background: #1c1d1f; color: #fff; padding: 24px; text-align: center; margin-top: 48px;">
+        <p>&copy; 2025 Cosmos. All rights reserved.</p>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="course-utils.js"></script>
+    <script>
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const courseId = parseInt(params.get('id'));
+            const course = CourseUtils.getCourseById(courseId);
+
+            if (!course) {
+                document.getElementById('courseContent').innerHTML = '<div style="text-align:center; padding: 60px 20px;"><h1>Course not found</h1><a href="index.html" class="btn btn-primary">Browse Courses</a></div>';
+                return;
+            }
+
+            const user = Auth.getCurrentUser();
+            const userId = user ? (user.id || user.email) : null;
+            const isEnrolled = user && user.enrolledCourses && user.enrolledCourses.includes(courseId);
+            const inWishlist = userId && CourseUtils.isInWishlist(userId, courseId);
+            const reviews = CourseUtils.getReviews(courseId);
+            const avgRating = course.rating || 0;
+            const reviewCount = course.ratingCount || reviews.length;
+
+            function toggleWishlist() {
+                if (!userId) { window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href); return; }
+                if (inWishlist) CourseUtils.removeFromWishlist(userId, courseId);
+                else CourseUtils.addToWishlist(userId, courseId);
+                window.location.reload();
+            }
+
+            const curriculumHtml = (course.curriculum && course.curriculum.length) ? course.curriculum.map((section, si) => {
+                const lessons = section.lessons || [];
+                const lessonRows = lessons.map((l, li) => `<div class="lesson-row"><span>${l.title}</span><span>${l.duration || '5:00'}</span></div>`).join('');
+                return `<div class="section-head">${section.title}</div>${lessonRows}`;
+            }).join('') : '<div class="section-head">Course Content</div><div class="lesson-row"><span>Content will be available after enrollment.</span><span>-</span></div>';
+
+            const learningList = (course.whatYouWillLearn && course.whatYouWillLearn.length) ? course.whatYouWillLearn.map(w => `<li>${w}</li>`).join('') : (course.desc ? `<li>${course.desc}</li>` : '<li>Key concepts and skills covered in the course.</li>');
+
+            const reviewsHtml = reviews.slice(0, 5).map(r => `
+                <div class="review-card">
+                    <div class="reviewer">${r.userName}</div>
+                    <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                    <div class="review-text">${r.comment || ''}</div>
+                </div>
+            `).join('') || '<p class="review-empty">No reviews yet. Be the first to review after completing the course!</p>';
+
+            let ctaHtml = '';
+            if (isEnrolled) {
+                ctaHtml = `<a href="player.html?id=${course.id}" class="btn btn-primary">Go to course</a>`;
+            } else if (course.price === 0) {
+                ctaHtml = user ? `<button onclick="enrollFree(${course.id})" class="btn btn-primary">Enroll for free</button>` : `<a href="login.html?redirect=course.html?id=${course.id}" class="btn btn-primary">Enroll for free</a>`;
+            } else {
+                ctaHtml = user ? `<a href="checkout.html?courseId=${course.id}" class="btn btn-primary">Buy now</a>` : `<a href="login.html?redirect=course.html?id=${course.id}" class="btn btn-primary">Buy now</a>`;
+            }
+
+            document.getElementById('courseContent').innerHTML = `
+                <div class="course-hero">
+                    <div class="course-hero-left">
+                        <h1>${course.title}</h1>
+                        <div class="course-meta-line">
+                            <span>⭐ ${avgRating}</span>
+                            <span>(${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'})</span>
+                            <span>•</span>
+                            <span>${(course.students || 0).toLocaleString()} students</span>
+                            ${course.level ? `<span>•</span><span>${course.level}</span>` : ''}
+                            ${course.language ? `<span>•</span><span>${course.language}</span>` : ''}
+                        </div>
+                        <div class="course-instructor-landing">
+                            <div class="avatar">${(course.instructor || 'I').charAt(0).toUpperCase()}</div>
+                            <div>
+                                <strong>${course.instructor || 'Instructor'}</strong><br>
+                                <span style="font-size:0.85rem; color: var(--text-secondary);">Instructor</span>
+                            </div>
+                        </div>
+                        <p class="course-hero-left" style="line-height:1.6; color: var(--text-secondary);">${course.description || course.desc || ''}</p>
+                    </div>
+                    <div class="course-hero-right">
+                        <div class="course-card-sticky">
+                            <img src="${course.img}" alt="${course.title}" class="preview-img">
+                            <div class="card-body">
+                                <div class="course-price-row">
+                                    <span class="current">${course.price === 0 ? 'Free' : '$' + course.price}</span>
+                                    ${course.price > 0 && course.originalPrice ? `<span class="original">$${course.originalPrice}</span>` : ''}
+                                </div>
+                                <div class="course-cta-group">
+                                    ${ctaHtml}
+                                    <button type="button" class="wishlist-btn ${inWishlist ? 'in-wishlist' : ''}" onclick="toggleWishlist()">${inWishlist ? '♥ In wishlist' : '♡ Add to wishlist'}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section style="margin-bottom: 48px;">
+                    <h2 class="course-section-title">What you'll learn</h2>
+                    <ul class="what-you-learn">${learningList}</ul>
+                </section>
+
+                <section style="margin-bottom: 48px;">
+                    <h2 class="course-section-title">Course content</h2>
+                    <div class="curriculum-preview">${curriculumHtml}</div>
+                </section>
+
+                <section style="margin-bottom: 48px;">
+                    <h2 class="course-section-title">Student reviews</h2>
+                    <div class="reviews-summary">
+                        <span class="rating-big">${avgRating}</span>
+                        <div>
+                            <div class="stars">${'★'.repeat(Math.round(avgRating))}${'☆'.repeat(5 - Math.round(avgRating))}</div>
+                            <div class="count">${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'}</div>
+                        </div>
+                    </div>
+                    <div id="reviewsList">${reviewsHtml}</div>
+                    ${isEnrolled && user ? `
+                    <div class="review-form-box">
+                        <h3 style="margin-bottom: 16px;">Leave a review</h3>
+                        <form id="reviewForm">
+                            <div class="form-group-review">
+                                <label>Rating</label>
+                                <select id="reviewRating" required>
+                                    <option value="5">5 stars</option>
+                                    <option value="4">4 stars</option>
+                                    <option value="3">3 stars</option>
+                                    <option value="2">2 stars</option>
+                                    <option value="1">1 star</option>
+                                </select>
+                            </div>
+                            <div class="form-group-review">
+                                <label>Comment</label>
+                                <textarea id="reviewComment" placeholder="Share your experience..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit review</button>
+                        </form>
+                    </div>
+                    ` : ''}
+                </section>
+            `;
+
+            document.title = course.title + ' | Cosmos';
+
+            if (isEnrolled && user) {
+                document.getElementById('reviewForm')?.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const rating = parseInt(document.getElementById('reviewRating').value);
+                    const comment = document.getElementById('reviewComment').value.trim();
+                    CourseUtils.addReview(courseId, userId, user.name, rating, comment);
+                    alert('Thank you for your review!');
+                    window.location.reload();
+                });
+            }
+
+            window.toggleWishlist = toggleWishlist;
+            window.enrollFree = function(id) {
+                if (!user) return;
+                const users = JSON.parse(localStorage.getItem('udemyUsers')) || [];
+                const idx = users.findIndex(u => u.email === user.email);
+                if (idx !== -1) {
+                    if (!users[idx].enrolledCourses) users[idx].enrolledCourses = [];
+                    if (!users[idx].enrolledCourses.includes(id)) {
+                        users[idx].enrolledCourses.push(id);
+                        localStorage.setItem('udemyUsers', JSON.stringify(users));
+                        const updated = { ...user, enrolledCourses: users[idx].enrolledCourses };
+                        Auth.setCurrentUser(updated);
+                    }
+                }
+                window.location.reload();
+            };
+        })();
+    </script>
+</body>
+</html>

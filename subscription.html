@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Choose your subscription plan">
+    <title>Subscription Plans - Cosmos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+    <style>
+        .subscription-container {
+            max-width: 1200px;
+            margin: 120px auto 80px;
+            padding: 0 24px;
+        }
+
+        .subscription-header {
+            text-align: center;
+            margin-bottom: 64px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .subscription-header h1 {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subscription-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .plan-card {
+            background: var(--bg-card);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: var(--shadow-card);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            contain: layout style paint;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .plan-card.featured {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }
+
+        .plan-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-gradient);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .plan-price {
+            margin: 24px 0;
+        }
+
+        .plan-price .amount {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .plan-price .period {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .plan-description {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .plan-features li {
+            padding: 12px 0;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #10b981;
+            font-weight: 700;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .plan-button {
+            width: 100%;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+        }
+
+        .plan-button.primary {
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .plan-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .plan-button.outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .plan-button.outline:hover {
+            border-color: var(--primary-color);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .faq-section {
+            margin-top: 80px;
+            animation: fadeInUp 0.8s ease-out;
+            animation-delay: 0.3s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .faq-section h2 {
+            font-size: 2rem;
+            margin-bottom: 32px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .faq-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .faq-answer {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="auth.js"></script>
+    <script>
+        const user = Auth.getCurrentUser();
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Cosmos</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html#courses" class="nav-link">Courses</a></li>
+                    <li><a href="subscription.html" class="nav-link active">Subscription</a></li>
+                    <li><a href="profile.html" class="nav-link">Profile</a></li>
+                    <!-- Auth Links (Will be toggled by auth.js) -->
+                    <li><a href="login.html" class="nav-link">Log In</a></li>
+                    <li><a href="signup.html" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">Sign Up</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="subscription-container">
+            <div class="subscription-header">
+                <h1>Choose Your Plan</h1>
+                <p>Unlock unlimited access to all courses, premium features, and exclusive content</p>
+            </div>
+
+            <div class="plans-grid">
+                <!-- Basic Plan -->
+                <div class="plan-card">
+                    <div class="plan-name">Basic</div>
+                    <div class="plan-price">
+                        <span class="amount">$9</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="plan-description">Perfect for casual learners who want to explore our course library.</p>
+                    <ul class="plan-features">
+                        <li>Access to free courses</li>
+                        <li>Basic course materials</li>
+                        <li>Community support</li>
+                        <li>Mobile app access</li>
+                    </ul>
+                    <button class="plan-button outline" onclick="selectPlan('basic', 9)">Choose Basic</button>
+                </div>
+
+                <!-- Pro Plan (Featured) -->
+                <div class="plan-card featured">
+                    <div class="plan-name">Pro</div>
+                    <div class="plan-price">
+                        <span class="amount">$29</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="plan-description">Best value for serious learners. Get unlimited access to everything.</p>
+                    <ul class="plan-features">
+                        <li>All Basic features</li>
+                        <li>Unlimited course access</li>
+                        <li>Premium course materials</li>
+                        <li>Certificates of completion</li>
+                        <li>Priority support</li>
+                        <li>Early access to new courses</li>
+                        <li>Downloadable resources</li>
+                    </ul>
+                    <button class="plan-button primary" onclick="selectPlan('pro', 29)">Choose Pro</button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="plan-card">
+                    <div class="plan-name">Enterprise</div>
+                    <div class="plan-price">
+                        <span class="amount">$99</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="plan-description">For teams and organizations. Advanced features and dedicated support.</p>
+                    <ul class="plan-features">
+                        <li>All Pro features</li>
+                        <li>Team management</li>
+                        <li>Progress tracking & analytics</li>
+                        <li>Custom learning paths</li>
+                        <li>Dedicated account manager</li>
+                        <li>API access</li>
+                        <li>White-label options</li>
+                    </ul>
+                    <button class="plan-button outline" onclick="selectPlan('enterprise', 99)">Choose Enterprise</button>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question">Can I cancel anytime?</div>
+                        <div class="faq-answer">Yes, you can cancel your subscription at any time. Your access will continue until the end of your billing period.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">What payment methods do you accept?</div>
+                        <div class="faq-answer">We accept all major credit cards, debit cards, and PayPal through our secure Stripe payment system.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Do you offer refunds?</div>
+                        <div class="faq-answer">Yes, we offer a 30-day money-back guarantee. If you're not satisfied, contact us for a full refund.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Can I change plans later?</div>
+                        <div class="faq-answer">Absolutely! You can upgrade or downgrade your plan at any time. Changes take effect immediately.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script src="subscription.js"></script>
+    <script src="animations.js"></script>
+</body>
+
+</html>

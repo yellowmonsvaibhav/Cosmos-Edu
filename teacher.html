@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instructor dashboard for managing your courses and content.">
+    <title>Instructor Dashboard - Cosmos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+</head>
+
+<body class="admin-body"> <!-- Reuse Admin Body Style -->
+    <script src="auth.js"></script>
+    <script>Auth.checkTeacherAccess();</script>
+
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <div class="nav-brand">
+                <h2>Instructor Dashboard</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#courses" class="nav-link">Courses</a></li>
+                <li><a href="profile.html" class="nav-link">Profile</a></li>
+                <li><span style="color: var(--text-secondary);">Welcome, <span id="teacherName"
+                            style="color:white; font-weight:700;">Instructor</span></span></li>
+                <li><a href="#" class="btn btn-outline" onclick="Auth.logout(); return false;" style="padding: 8px 20px; font-size: 0.9rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-header-section">
+            <h1>My Courses</h1>
+            <p>Manage your content and view performance.</p>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Instructor Analytics -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <h3>My Courses</h3>
+                    <p class="stat-number" id="teacherCourseCount">0</p>
+                    <span class="stat-label">Published</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Students</h3>
+                    <p class="stat-number" id="teacherStudentCount">0</p>
+                    <span class="stat-label">Enrolled</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Estimated Revenue</h3>
+                    <p class="stat-number" id="teacherRevenue">$0</p>
+                    <span class="stat-label">70% share</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Avg. Rating</h3>
+                    <p class="stat-number" id="teacherRating">0</p>
+                    <span class="stat-label">Across courses</span>
+                </div>
+            </section>
+
+            <!-- Course Management Section -->
+            <section class="admin-section">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h2 style="margin:0;">Created Courses</h2>
+                    <button class="add-btn" onclick="openAddModal()" style="margin:0;">+ Create New Course</button>
+                </div>
+
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Course</th>
+                            <th>Students</th>
+                            <th>Rating</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody">
+                        <!-- Dynamic Content from teacher.js -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <div id="addCourseModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="close-modal" onclick="closeAddModal()">&times;</button>
+            <h2>Create New Course</h2>
+            <form id="addCourseForm">
+                <input type="text" id="courseTitle" class="modal-input" placeholder="Course Title" required>
+                <input type="text" id="courseImg" class="modal-input" placeholder="Image URL" required>
+                <input type="text" id="courseCategory" class="modal-input" placeholder="Category" required>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="isFree" onchange="togglePriceInput()">
+                    <label for="isFree">Make Free</label>
+                </div>
+                <input type="number" id="coursePrice" class="modal-input" placeholder="Price ($)" required>
+                <input type="text" id="courseDesc" class="modal-input" placeholder="Description" required>
+
+                <!-- Enhanced Video Upload Section -->
+                <div class="form-group" style="margin-top: 24px;">
+                    <label
+                        style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:8px; display:block; font-weight: 600;">
+                        📹 Course Videos
+                    </label>
+
+                    <div style="background: rgba(10, 10, 12, 0.4); border: 2px dashed rgba(45, 212, 191, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 16px; cursor: pointer; transition: all 0.3s;"
+                        id="videoDropZone">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; margin-bottom: 12px;">🎬</div>
+                            <p style="color: var(--text-secondary); margin-bottom: 8px; font-weight: 500;">Upload Video
+                                Files or Enter URLs</p>
+                            <p style="color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 12px;">Drag & drop
+                                video files here, or click to browse</p>
+                            <input type="file" id="videoFileInput" accept="video/*" multiple style="display: none;">
+                            <button type="button" onclick="document.getElementById('videoFileInput').click()"
+                                style="background: linear-gradient(135deg, #2dd4bf 0%, #3b82f6 100%); color: white; border: none; padding: 10px 20px; border-radius: 99px; cursor: pointer; font-weight: 600; margin-right: 8px;">
+                                Choose Files
+                            </button>
+                            <button type="button" onclick="showVideoUrlInput()"
+                                style="background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: none; padding: 10px 20px; border-radius: 99px; cursor: pointer; font-weight: 600;">
+                                Add URL
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Video URL Input -->
+                    <div id="videoUrlInputSection" style="display: none; margin-bottom: 16px;">
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="videoUrlInput" class="modal-input"
+                                placeholder="Enter video URL (YouTube, Vimeo, or direct URL)"
+                                style="flex: 1; margin: 0;">
+                            <button type="button" onclick="addVideoUrl()"
+                                style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; white-space: nowrap;">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Video List -->
+                    <div id="videoList" style="margin-top: 16px;"></div>
+                </div>
+
+                <button type="submit" class="add-btn" style="width: 100%; margin-top: 20px;">Publish Course</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="teacher.js"></script>
+    <script>
+        // Video Upload Functionality
+        let courseVideos = [];
+
+        const videoDropZone = document.getElementById('videoDropZone');
+        const videoFileInput = document.getElementById('videoFileInput');
+
+        // Drag and drop handlers
+        videoDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            videoDropZone.style.borderColor = '#2dd4bf';
+            videoDropZone.style.background = 'rgba(45, 212, 191, 0.05)';
+        });
+
+        videoDropZone.addEventListener('dragleave', () => {
+            videoDropZone.style.borderColor = 'rgba(45, 212, 191, 0.3)';
+            videoDropZone.style.background = 'rgba(10, 10, 12, 0.4)';
+        });
+
+        videoDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            videoDropZone.style.borderColor = 'rgba(45, 212, 191, 0.3)';
+            videoDropZone.style.background = 'rgba(10, 10, 12, 0.4)';
+
+            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('video/'));
+            handleVideoFiles(files);
+        });
+
+        videoFileInput.addEventListener('change', (e) => {
+            handleVideoFiles(Array.from(e.target.files));
+        });
+
+        function handleVideoFiles(files) {
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    courseVideos.push({
+                        name: file.name,
+                        type: 'file',
+                        data: e.target.result,
+                        size: file.size
+                    });
+                    updateVideoList();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function showVideoUrlInput() {
+            document.getElementById('videoUrlInputSection').style.display = 'block';
+            document.getElementById('videoUrlInput').focus();
+        }
+
+        function addVideoUrl() {
+            const url = document.getElementById('videoUrlInput').value.trim();
+            if (url) {
+                courseVideos.push({
+                    name: extractVideoName(url),
+                    type: 'url',
+                    data: url
+                });
+                document.getElementById('videoUrlInput').value = '';
+                updateVideoList();
+            }
+        }
+
+        function extractVideoName(url) {
+            if (url.includes('youtube.com') || url.includes('youtu.be')) return 'YouTube Video';
+            if (url.includes('vimeo.com')) return 'Vimeo Video';
+            return url.split('/').pop().split('?')[0] || 'Video';
+        }
+
+        function updateVideoList() {
+            const list = document.getElementById('videoList');
+            if (courseVideos.length === 0) {
+                list.innerHTML = '';
+                return;
+            }
+
+            list.innerHTML = '<p style="color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 12px;">Added Videos:</p>';
+            courseVideos.forEach((video, index) => {
+                const item = document.createElement('div');
+                item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: rgba(45, 212, 191, 0.1); border: 1px solid rgba(45, 212, 191, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 8px;';
+
+                item.innerHTML = `
+                    <div>
+                        <div style="color: var(--text-primary); font-weight: 500; margin-bottom: 4px;">${video.name}</div>
+                        <div style="color: var(--text-tertiary); font-size: 0.85rem;">
+                            ${video.type === 'file' ? formatFileSize(video.size) : 'URL'}
+                        </div>
+                    </div>
+                    <button type="button" onclick="removeVideo(${index})" style="background: rgba(239, 68, 68, 0.2); color: #ef4444; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        Remove
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function removeVideo(index) {
+            courseVideos.splice(index, 1);
+            updateVideoList();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+            return (bytes / (1024 * 1024 * 1024)).toFixed(1) + ' GB';
+        }
+    </script>
+</body>
+
+</html>

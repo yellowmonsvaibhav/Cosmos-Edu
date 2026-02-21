@@ -1,0 +1,384 @@
+/* Course Player Specific Styles */
+
+body {
+    background-color: var(--bg-base);
+    overflow-y: hidden;
+    /* App-like feel */
+}
+
+/* Header */
+.player-header {
+    height: 56px;
+    background: #1f1f23;
+    border-bottom: 1px solid #3e4143;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    color: white;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.back-home {
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.back-home:hover {
+    color: white;
+}
+
+.course-mini-info h1 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #f7f9fa;
+}
+
+/* Main Layout */
+.player-container {
+    display: flex;
+    height: calc(100vh - 56px);
+    overflow: hidden;
+}
+
+/* Video Section (Left) */
+.video-section {
+    flex: 1;
+    overflow-y: auto;
+    background: #000;
+}
+
+.video-player-wrapper {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #2c2c30, #1a1a1d);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.video-placeholder:hover {
+    background: linear-gradient(to bottom, #323236, #1f1f22);
+}
+
+.play-button {
+    font-size: 3rem;
+    color: white;
+    width: 80px;
+    height: 80px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    margin-bottom: 16px;
+}
+
+.course-meta {
+    padding: 24px 10%;
+    background: var(--bg-root);
+    color: var(--text-primary);
+    min-height: 500px;
+}
+
+.tabs {
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 600;
+    padding-bottom: 12px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    color: white;
+    border-bottom-color: white;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.course-description {
+    line-height: 1.7;
+    margin-bottom: 32px;
+    color: #d1d7dc;
+}
+
+/* Instructor Box */
+.instructor-box {
+    margin-top: 40px;
+}
+
+.instructor-box h3 {
+    margin-bottom: 16px;
+}
+
+.instructor-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.badge {
+    background: #3e4143;
+    padding: 2px 6px;
+    /* Reduced padding */
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    /* Reduced margin */
+    display: inline-block;
+    color: #e0e0e0;
+}
+
+
+/* Sidebar (Right) */
+.player-sidebar {
+    width: 400px;
+    min-width: 400px;
+    background: #1c1d1f;
+    border-left: 1px solid #3e4143;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+
+.sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid #3e4143;
+    background: #1c1d1f;
+}
+
+.sidebar-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.curriculum-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.section-item {
+    border-bottom: 1px solid #3e4143;
+}
+
+.section-item h4 {
+    padding: 16px;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    background: #2d2f31;
+    cursor: pointer;
+}
+
+.lesson-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lesson {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.lesson:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.lesson.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #a435f0;
+    /* Udemy Purple */
+}
+
+/* Checkbox Style */
+.checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #6a6f73;
+    border-radius: 2px;
+    margin-right: 12px;
+}
+
+.time {
+    font-size: 0.8rem;
+    color: #a1a1aa;
+}
+
+/* Offer Box */
+.offer-box {
+    padding: 16px;
+    background: #2d2f31;
+    border-top: 1px solid #3e4143;
+}
+
+.offer-header {
+    margin-bottom: 12px;
+}
+
+.offer-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.offer-curr {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+.offer-orig {
+    text-decoration: line-through;
+    color: #a1a1aa;
+}
+
+.offer-time {
+    color: #fca5a5;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    display: block;
+    text-align: center;
+}
+
+/* Enhanced Tab Functionality */
+.tab {
+    transition: var(--transition);
+}
+
+.tab:hover {
+    color: var(--text-primary);
+}
+
+.tab-content {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Improved Video Container */
+.video-placeholder iframe,
+.video-placeholder video {
+    border-radius: 0;
+}
+
+/* Better Scrollbar */
+.curriculum-list::-webkit-scrollbar,
+.video-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.curriculum-list::-webkit-scrollbar-track,
+.video-section::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.curriculum-list::-webkit-scrollbar-thumb,
+.video-section::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 4px;
+}
+
+.curriculum-list::-webkit-scrollbar-thumb:hover,
+.video-section::-webkit-scrollbar-thumb:hover {
+    background: #4f46e5;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .player-container {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .player-sidebar {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        border-left: none;
+        border-top: 1px solid #3e4143;
+    }
+
+    .video-player-wrapper {
+        aspect-ratio: 16/9;
+    }
+
+    .course-meta {
+        padding: 24px;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .player-header {
+        padding: 0 12px;
+    }
+
+    .course-mini-info h1 {
+        font-size: 0.9rem;
+    }
+
+    .tabs {
+        gap: 16px;
+        overflow-x: auto;
+    }
+
+    .tab {
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+}

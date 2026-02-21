@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin dashboard for managing courses, users, and platform settings.">
+    <title>Admin Panel - Cosmos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+</head>
+
+<body class="admin-body">
+    <script src="auth.js"></script>
+    <script>Auth.checkAdminAccess();</script>
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <div class="nav-brand">
+                <h2>Admin Dashboard</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="admin.html" class="nav-link active">Dashboard</a></li>
+                <li><a href="#settings" class="nav-link" onclick="scrollToSettings(); return false;">Settings</a></li>
+                <li><a href="profile.html" class="nav-link">Profile</a></li>
+                <li><a href="#" class="btn btn-outline" onclick="Auth.logout(); return false;" style="padding: 8px 20px; font-size: 0.9rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-header-section">
+            <h1>Admin Dashboard</h1>
+            <p>Manage courses, users, and platform settings</p>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <h3>Total Courses</h3>
+                    <p class="stat-number">5</p>
+                    <span class="stat-label">Active courses</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Students</h3>
+                    <p class="stat-number">310,000+</p>
+                    <span class="stat-label">Enrolled users</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Revenue</h3>
+                    <p class="stat-number">$780K</p>
+                    <span class="stat-label">Monthly earnings</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Rating</h3>
+                    <p class="stat-number">4.8★</p>
+                    <span class="stat-label">Average rating</span>
+                </div>
+            </section>
+
+            <!-- Course Management Section -->
+            <section class="admin-section">
+                <h2>Course Management</h2>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Course Name</th>
+                            <th>Status</th>
+                            <th>Students</th>
+                            <th>Rating</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody">
+                        <!-- Dynamic Content -->
+                    </tbody>
+                </table>
+                <button class="add-btn" onclick="openAddModal()" style="margin-top: 16px;">+ Add New Course</button>
+            </section>
+
+            <!-- Refunds Section -->
+            <section class="admin-section">
+                <h2>Refund Requests</h2>
+                <div id="refundsContainer"></div>
+            </section>
+
+            <!-- Coupons Section -->
+            <section class="admin-section">
+                <h2>Coupons & Promotions</h2>
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="newCouponCode" class="modal-input" placeholder="Coupon code" style="max-width: 200px; display: inline-block; margin-right: 8px;">
+                    <input type="number" id="newCouponDiscount" class="modal-input" placeholder="Discount %" min="1" max="100" style="max-width: 100px; display: inline-block; margin-right: 8px;">
+                    <select id="newCouponCourse" style="padding: 10px; border-radius: 8px; margin-right: 8px;"><option value="">All courses</option></select>
+                    <button type="button" class="add-btn" onclick="createCoupon()">Create Coupon</button>
+                </div>
+                <div id="couponsList"></div>
+            </section>
+
+            <!-- Add Course Modal -->
+            <div id="addCourseModal" class="modal">
+                <div class="modal-content">
+                    <button class="close-modal" onclick="closeAddModal()">&times;</button>
+                    <h2>Upload New Course</h2>
+                    <form id="addCourseForm">
+                        <input type="text" id="courseTitle" class="modal-input" placeholder="Course Title" required>
+                        <input type="text" id="courseImg" class="modal-input" placeholder="Image URL (e.g. Unsplash)"
+                            required>
+                        <input type="text" id="courseCategory" class="modal-input"
+                            placeholder="Category (Programming, Design...)" required>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="isFree" onchange="togglePriceInput()">
+                            <label for="isFree">Make this course FREE</label>
+                        </div>
+                        <input type="number" id="coursePrice" class="modal-input" placeholder="Price ($)" required>
+                        <input type="text" id="courseDesc" class="modal-input" placeholder="Short Description" required>
+                        <button type="submit" class="add-btn" style="width: 100%">Upload Course</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Instructor Applications Section -->
+            <section class="admin-section">
+                <h2>Instructor Applications</h2>
+                <div id="noApplications"
+                    style="padding: 40px; text-align: center; color: var(--text-tertiary); display: none;">
+                    No pending applications
+                </div>
+                <div id="applicationsContainer"></div>
+            </section>
+
+            <!-- Document Viewer Modal -->
+            <div id="documentModal" class="modal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <button class="close-modal" onclick="closeDocumentModal()">&times;</button>
+                    <h2 id="documentTitle">Document Viewer</h2>
+                    <div id="documentViewer" style="margin-top: 20px; text-align: center;"></div>
+                </div>
+            </div>
+
+            <!-- User Management Section -->
+            <section class="admin-section">
+                <h2>User Management</h2>
+                <div class="user-filters">
+                    <input type="text" placeholder="Search users..." class="search-input">
+                    <select class="filter-select">
+                        <option>All Users</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                        <option>Premium</option>
+                    </select>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Courses Enrolled</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- Dynamic User Content -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="admin-section" id="settings">
+                <h2>Platform Settings</h2>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>Platform Name</label>
+                        <input type="text" value="Cosmos" placeholder="Platform name">
+                    </div>
+                    <div class="form-group">
+                        <label>Support Email</label>
+                        <input type="email" value="support@cosmos.com" placeholder="Support email">
+                    </div>
+                    <div class="form-group">
+                        <label>Commission Rate (%)</label>
+                        <input type="number" value="30" placeholder="Commission rate">
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="maintenance" checked>
+                        <label for="maintenance">Enable Maintenance Mode</label>
+                    </div>
+                    <button class="save-btn">Save Settings</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="course-utils.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

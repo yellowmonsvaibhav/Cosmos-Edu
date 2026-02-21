@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign in to your Cosmos account to continue learning.">
+    <title>Sign In - Cosmos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body class="auth-page login-page">
+    <div class="login-wrap">
+        <div class="login-split login-benefits">
+            <a href="index.html" class="auth-logo login-logo">Cosmos</a>
+            <h1 class="login-headline">Welcome back</h1>
+            <p class="login-tagline">Sign in to continue learning, track your progress, and access your courses from any
+                device.</p>
+            <ul class="login-list">
+                <li class="login-list-item">
+                    <span class="login-icon">📚</span>
+                    <span>Pick up where you left off</span>
+                </li>
+                <li class="login-list-item">
+                    <span class="login-icon">🎯</span>
+                    <span>Track progress & earn certificates</span>
+                </li>
+                <li class="login-list-item">
+                    <span class="login-icon">🔒</span>
+                    <span>Secure & private — your data stays safe</span>
+                </li>
+            </ul>
+            <p class="login-trust">Join <strong>100,000+</strong> learners worldwide</p>
+        </div>
+
+        <div class="login-split login-form-split">
+            <div class="auth-card login-card">
+                <h2 class="auth-title">Sign in to your account</h2>
+                <p class="login-subtitle">Enter your email and password to continue.</p>
+
+                <div id="errorMsg" class="error-msg"></div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group login-form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group login-form-group">
+                        <label>Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="auth-btn login-btn">Sign In</button>
+                </form>
+
+                <div class="auth-divider">
+                    <span>or continue with</span>
+                </div>
+
+                <div class="google-signin-wrapper">
+                    <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                        data-callback="handleGoogleSignIn">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+                        data-text="signin_with" data-size="large" data-logo_alignment="left" data-width="100%">
+                    </div>
+                </div>
+
+                <div class="auth-footer login-footer">
+                    Don't have an account? <a href="signup.html" class="auth-link">Sign Up</a>
+                </div>
+                <div class="login-links">
+                    <a href="admin-login.html">Admin Login</a>
+                    <span class="login-links-sep">|</span>
+                    <a href="teacher-login.html">Instructor Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        // Google Sign In Callback
+        function handleGoogleSignIn(response) {
+            const result = Auth.loginWithGoogle(response.credential);
+            const errorDiv = document.getElementById('errorMsg');
+
+            if (result.success) {
+                errorDiv.style.display = 'none';
+                // Redirect based on role
+                setTimeout(() => {
+                    if (result.user.role === 'admin') window.location.href = 'admin.html';
+                    else if (result.user.role === 'teacher') window.location.href = 'teacher.html';
+                    else window.location.href = 'index.html';
+                }, 300);
+            } else {
+                errorDiv.textContent = result.message;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMsg');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing In...';
+
+            setTimeout(() => {
+                const result = Auth.login(email, password);
+                if (result.success) {
+                    errorDiv.style.display = 'none';
+                    submitBtn.textContent = 'Success!';
+                    submitBtn.classList.add('btn-success');
+                    setTimeout(() => {
+                        if (result.user.role === 'admin') window.location.href = 'admin.html';
+                        else if (result.user.role === 'teacher') window.location.href = 'teacher.html';
+                        else window.location.href = 'index.html';
+                    }, 500);
+                } else {
+                    errorDiv.textContent = result.message;
+                    errorDiv.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Sign In';
+                }
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>

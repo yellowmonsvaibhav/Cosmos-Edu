@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin portal login for Cosmos platform.">
+    <title>Admin Login - Cosmos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="image.jpeg" type="image/jpeg">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-card">
+        <a href="index.html" class="auth-logo">Cosmos</a>
+        <h2 class="auth-title">Admin Portal</h2>
+
+        <div id="errorMsg" class="error-msg"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Admin Email</label>
+                <input type="email" id="email" class="form-input" placeholder="admin@cosmos.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="auth-btn">Access Dashboard</button>
+        </form>
+
+        <div class="auth-divider">
+            <span>or continue with</span>
+        </div>
+
+        <div class="google-signin-wrapper">
+            <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                data-callback="handleGoogleSignIn">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+                data-text="signin_with" data-size="large" data-logo_alignment="left" data-width="100%">
+            </div>
+        </div>
+
+        <div class="auth-footer">
+            Not an admin? <a href="login.html" class="auth-link">Student Login</a>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Google Sign In Callback with Admin Role Validation
+        function handleGoogleSignIn(response) {
+            const result = Auth.handleGoogleCallback(response, 'admin');
+            const errorDiv = document.getElementById('errorMsg');
+
+            if (result.success) {
+                errorDiv.style.display = 'none';
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 300);
+            } else {
+                errorDiv.textContent = result.message;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMsg');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Accessing...';
+
+            setTimeout(() => {
+                const result = Auth.login(email, password);
+
+                if (result.success) {
+                    // Strict Admin Check for this portal
+                    if (result.user.role === 'admin') {
+                        errorDiv.style.display = 'none';
+                        submitBtn.textContent = 'Success!';
+                        submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #34d399 100%)';
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 500);
+                    } else {
+                        errorDiv.textContent = 'Access Denied: You do not have admin privileges.';
+                        errorDiv.style.display = 'block';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Access Dashboard';
+                        Auth.logout();
+                    }
+                } else {
+                    errorDiv.textContent = result.message;
+                    errorDiv.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Access Dashboard';
+                }
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>
